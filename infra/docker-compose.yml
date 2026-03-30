@@ -1,0 +1,22 @@
+version: "3.9"
+
+# Optional standalone Postgres for local development.
+# Usage: docker compose -f infra/docker-compose.yml up -d
+# Then set DATABASE_URL=postgresql+psycopg://crm_user:crm_pass@localhost:5432/crm_db
+# Credentials here are for local development only — do NOT use in production.
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-crm_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-crm_pass}
+      POSTGRES_DB: ${POSTGRES_DB:-crm_db}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
